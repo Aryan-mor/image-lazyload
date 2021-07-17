@@ -1,0 +1,24 @@
+{
+  "name": "image-lazyload-example",
+  "homepage": ".",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node ../node_modules/react-scripts/bin/react-scripts.js start",
+    "build": "set REACT_APP_MATERIAL_HELPER_LOGGER=true&&node ../node_modules/react-scripts/bin/react-scripts.js build",
+    "test": "node ../node_modules/react-scripts/bin/react-scripts.js test",
+    "eject": "node ../node_modules/react-scripts/bin/react-scripts.js eject"
+  },
+  "dependencies": {
+    "react": "link:../node_modules/react",
+    "react-dom": "link:../node_modules/react-dom",
+    "react-scripts": "link:../node_modules/react-scripts",
+    "image-lazyload": "link:.."
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
