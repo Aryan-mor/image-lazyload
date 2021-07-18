@@ -2,6 +2,25 @@ import React, { useEffect, useRef, useState } from 'react'
 import styles from '../../styles.module.css'
 import PropTypes from 'prop-types'
 
+
+
+
+export function useWindowSize(wait = 2000) {
+  const [size, setSize] = useState([0, 0])
+  useEffect(() => {
+    function updateSize() {
+      tryIt(() => setSize([window.innerWidth, window.innerHeight]))
+    }
+
+    window.addEventListener('resize', _.debounce(function() {
+      updateSize()
+    }, wait))
+    updateSize()
+    return () => window.removeEventListener('resize', updateSize)
+  }, [])
+  return size
+}
+
 export default function Img(pr) {
   const {
     skeleton,
@@ -21,7 +40,24 @@ export default function Img(pr) {
   const [loaded, setLoaded] = useState(false)
   const [size, setSize] = useState()
 
+
+
+
+
   useEffect(() => {
+    setImageSize()
+    let timer = undefined
+
+    window.addEventListener('resize',()=>{
+      clearTimeout(timer)
+      timer = setTimeout(()=>{
+        setImageSize()
+      },1000)
+    })
+    return () => window.removeEventListener('resize', setImageSize)
+  }, [])
+
+  function setImageSize() {
     if (!(imageWidth && imageHeight))
       return
 
@@ -32,7 +68,8 @@ export default function Img(pr) {
       width,
       height
     })
-  }, [])
+  }
+
 
   return (
     <div
