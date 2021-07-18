@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import styles from '../../styles.module.css'
 import PropTypes from 'prop-types'
-import { isElement } from 'react-dom/test-utils'
 
 export default function Img(pr) {
   const {
@@ -46,11 +45,13 @@ export default function Img(pr) {
         ...props?.style
       }}>
       {
-        skeleton &&
-        React.isValidElement(skeleton) ?
-          skeleton :
-          !loaded &&
-          <div className={styles.skeleton}/>
+
+        !loaded && (
+          skeleton &&
+          React.isValidElement(skeleton) ?
+            skeleton :
+            <div className={styles.skeleton}/>
+        )
       }
       <div
         {...imageRootProps}
@@ -99,6 +100,6 @@ Img.propTypes = {
   loading: PropTypes.string,
   imageRootProps: PropTypes.object,
   imageProps: PropTypes.object,
-  skeleton: PropTypes.oneOfType([PropTypes.element,PropTypes.bool])
+  skeleton: PropTypes.oneOfType([PropTypes.element, PropTypes.bool])
 }
 

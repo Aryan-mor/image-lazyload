@@ -1,6 +1,6 @@
 {
   "name": "smart-image-lazyload",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "description": "React smart image lazy load without width and height",
   "author": "Aryan-mor",
   "license": "ISC",
@@ -60,7 +60,7 @@
     "npm-run-all": "latest",
     "prettier": "latest",
     "prop-types": "^15.7.2",
-    "react": "latest",
+    "react": "^17.0.2",
     "react-dom": "latest",
     "react-scripts": "^4.0.3",
     "style-loader": "^0.23.1"
