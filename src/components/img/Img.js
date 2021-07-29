@@ -2,23 +2,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import styles from '../../styles.module.css'
 import PropTypes from 'prop-types'
 import getImageSize from '../../helper/getImageSize'
+import useWindowSize from '../../helper/useWindowSize'
 
-
-export function useWindowSize(wait = 2000) {
-  const [size, setSize] = useState([0, 0])
-  useEffect(() => {
-    function updateSize() {
-      tryIt(() => setSize([window.innerWidth, window.innerHeight]))
-    }
-
-    window.addEventListener('resize', _.debounce(function() {
-      updateSize()
-    }, wait))
-    updateSize()
-    return () => window.removeEventListener('resize', updateSize)
-  }, [])
-  return size
-}
 
 export default function Img(pr) {
   const {
@@ -33,35 +18,34 @@ export default function Img(pr) {
     imageProps = {},
     ...props
   } = pr
-
+  const [width] = useWindowSize()
   const ref = useRef()
   const [loaded, setLoaded] = useState(false)
   const [size, setSize] = useState()
 
-
   useEffect(() => {
     setImageSize()
-    let timer = undefined
-
-    window.addEventListener('resize', () => {
-      clearTimeout(timer)
-      timer = setTimeout(() => {
-        setImageSize()
-      }, 1000)
-    })
-    return () => window.removeEventListener('resize', setImageSize)
-  }, [])
+  }, [width])
 
   function setImageSize() {
     if (!(imageWidth && imageHeight))
       return
 
-    const [width, height] = getImageSize(ref, imageWidth, imageHeight)
 
-    setSize({
-      width,
-      height
-    })
+    const process = () => {
+      const [width, height] = getImageSize(ref, imageWidth, imageHeight)
+      setSize({
+        width,
+        height
+      })
+    }
+
+    if (size) {
+      setSize(undefined)
+      setTimeout(process, 300)
+      return
+    }
+    process()
   }
 
 
@@ -114,7 +98,6 @@ export default function Img(pr) {
 
   )
 }
-
 
 Img.defaultProps = {
   loading: 'lazy'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Img } from 'image-lazyload'
+import Img from 'image-lazyload'
 
 const testImages = [
   {
@@ -27,12 +27,14 @@ const testImages = [
 function App() {
   return (
     <div>
-      <div>
+      <div style={{
+        display:'flex',
+        flexWrap:'wrap'
+      }}>
         {
-          testImages.map(({ src, ph, index }) => (
-            <div>
+          testImages.map(({ src, ph },index) => (
+            <div key={index} style={{ padding:20,width:"20%"}}>
               <Img
-                key={index}
                 imageWidth={1280}
                 imageHeight={794}
                 src={src}
