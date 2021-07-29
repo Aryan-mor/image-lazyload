@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import getImageSize from '../../helper/getImageSize'
 import useWindowSize from '../../helper/useWindowSize'
 
-
 export default function Img(pr) {
   const {
     skeleton,
@@ -48,6 +47,29 @@ export default function Img(pr) {
     process()
   }
 
+  useEffect(() => {
+
+    if (loaded)
+      return
+    let interval = undefined
+    try {
+      setTimeout(() => {
+        interval = setInterval(() => {
+          if (loaded || ref.current.getElementsByClassName('smart-image')[0].complete) {
+            setLoaded(true)
+            clearInterval(interval)
+          }
+        }, 400)
+      }, 1000)
+    } catch {
+    }
+    return () => {
+      try {
+        clearInterval(interval)
+      } catch {}
+    }
+  }, [loaded])
+
 
   return (
     <div
@@ -81,7 +103,7 @@ export default function Img(pr) {
           ...imageRootProps?.style
         }}>
         <img
-          className={`${styles.initWithOpacity} ${loaded ? styles.initWithOpacityStart : ''}`}
+          className={`smart-image ${styles.initWithOpacity} ${loaded ? styles.initWithOpacityStart : ''}`}
           src={src}
           alt={alt}
           loading={loading}

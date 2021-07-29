@@ -32,7 +32,7 @@ function App() {
         flexWrap:'wrap'
       }}>
         {
-          testImages.map(({ src, ph },index) => (
+          [testImages[0]].map(({ src, ph },index) => (
             <div key={index} style={{ padding:20,width:"20%"}}>
               <Img
                 imageWidth={1280}
