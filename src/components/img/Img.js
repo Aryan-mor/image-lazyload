@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import styles from '../../styles.module.css'
 import PropTypes from 'prop-types'
-
-
+import getImageSize from '../../helper/getImageSize'
 
 
 export function useWindowSize(wait = 2000) {
@@ -35,24 +34,20 @@ export default function Img(pr) {
     ...props
   } = pr
 
-
   const ref = useRef()
   const [loaded, setLoaded] = useState(false)
   const [size, setSize] = useState()
-
-
-
 
 
   useEffect(() => {
     setImageSize()
     let timer = undefined
 
-    window.addEventListener('resize',()=>{
+    window.addEventListener('resize', () => {
       clearTimeout(timer)
-      timer = setTimeout(()=>{
+      timer = setTimeout(() => {
         setImageSize()
-      },1000)
+      }, 1000)
     })
     return () => window.removeEventListener('resize', setImageSize)
   }, [])
@@ -61,8 +56,7 @@ export default function Img(pr) {
     if (!(imageWidth && imageHeight))
       return
 
-    const width = ref?.current?.offsetWidth
-    const height = (width * imageHeight) / imageWidth
+    const [width, height] = getImageSize(ref, imageWidth, imageHeight)
 
     setSize({
       width,
@@ -82,7 +76,6 @@ export default function Img(pr) {
         ...props?.style
       }}>
       {
-
         !loaded && (
           skeleton &&
           React.isValidElement(skeleton) ?
